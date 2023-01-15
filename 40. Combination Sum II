@@ -1,0 +1,96 @@
+(leetcode - medium)
+ link : https://leetcode.com/problems/combination-sum-ii/description
+solution video :(striver bheya)  https://www.youtube.com/watch?v=G1fRTGRxXU8&list=PLgUwDviBIf0rGlzIn_7rsaR2FQ5e6ZOL9&index=9
+
+so undestand the intution first then come to code .
+Here i code in java language in both brute force and optimised approach .
+
+approach -1 (brute force)(using hash set as duplicasy not allowed)
+
+//time com. : O(2^t)*(klogn)   space :(O(k*x))  
+import java.util.*;
+import java.util.*;
+
+public class leetcode40 {
+
+	static Set<List<Integer>> ans;
+	public static void main(String[] args) {
+		int k=8;
+		int arr[] = {10,1,2,7,6,1,5};
+		int sum=0;
+		Arrays.sort(arr);
+		ans=new HashSet<>();
+		ArrayList<Integer> cur=new ArrayList<>();
+		listUniqueSubsequence(0,arr,sum,k,cur);
+		for(List<Integer> x:ans) {
+			System.out.println(x);
+		}
+
+	}
+	private static void listUniqueSubsequence(int i, int[] arr, int sum,
+			int k, ArrayList<Integer> cur) {
+		if(i==arr.length) {
+			if(sum==k) {
+				ans.add(new ArrayList<>(cur));
+			}
+			return;
+		}
+		cur.add(arr[i]);
+		sum+=arr[i];
+		listUniqueSubsequence(i+1,arr,sum,k,cur);
+		//backtrack
+		cur.remove(cur.size()-1);
+		sum-=arr[i];
+		listUniqueSubsequence(i+1,arr,sum,k,cur);
+		
+	}
+
+}
+
+
+
+approach - 2(optimal)(backtracking)
+
+//Time complexity : O(2^n)
+	//space complexity : O(k*x)
+  
+import java.util.*;
+public class leetcode40optimal {
+
+	public static void main(String[] args) {
+		int target=8;
+		int candidates[] = {10,1,2,7,6,1,5};
+		List<List<Integer>> res=new ArrayList<>();
+		res=combinationSum2(candidates,target);
+		for(List<Integer> x:res) {
+			System.out.println(x);
+		}
+
+	}
+	
+public static List<List<Integer>> combinationSum2(int[] candidates, int target) {
+	        List<List<Integer>> ans=new ArrayList<>();
+	        Arrays.sort(candidates);
+	        findCombinations(0,candidates,target,ans,new ArrayList<>());
+
+	        return ans;
+	    }
+	 static void findCombinations(int ind,int[] candidates, int target,
+	                         List<List<Integer>> ans,List<Integer> cur){
+	       if(target==0){
+	            ans.add(new ArrayList<>(cur));
+	            return;
+	        }
+	        for(int i=ind;i<candidates.length;i++){
+	            if(i>ind && candidates[i]==candidates[i-1])//skiping the duplicates
+	            continue;
+
+	            if(candidates[i]>target)//as array is sorted
+	            break;
+	            cur.add(candidates[i]);
+	            findCombinations(i+1,candidates,target-candidates[i],ans,cur);
+	            cur.remove(cur.size()-1);//backtrack
+	        }
+	    }
+	}
+
