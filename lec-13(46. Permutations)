@@ -1,0 +1,37 @@
+This is the another approach where we use index to fix all possible element and fix it . Heree we donot use extra map and list to store 
+the list and order . It leads to less space complexity .
+e.g [1,2,3]
+for ind-0 : case-1 : 1 then index move to 1(swap occures)
+            case-2 : 2 then index move to 1
+            case-3 : 3 then index move to 1
+            
+   //code :
+   
+   time complexity :O(n! *n)
+   space complexity :O(n+n)
+   class Solution {
+    public List<List<Integer>> permute(int[] nums) {
+        List<List<Integer>> ans=new ArrayList<>();
+        findPerm(0,nums,ans);
+    return ans;
+    }
+    void findPerm(int ind,int[] nums,List<List<Integer>> ans){
+        if(ind>=nums.length-1){
+            List<Integer> cur=new ArrayList<>();
+            for(int x:nums)
+            cur.add(x);
+            ans.add(new ArrayList<>(cur));
+            return;
+        }
+        for(int i=ind;i<nums.length;i++){
+            swap(i,ind,nums);
+            findPerm(ind+1,nums,ans);
+            swap(i,ind,nums);
+        }
+    }
+    void swap(int a,int b,int nums[]){
+        int temp=nums[a];
+        nums[a]=nums[b];
+        nums[b]=temp;
+    }
+}
