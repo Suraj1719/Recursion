@@ -1,0 +1,45 @@
+//using recursion and backtracking
+
+
+//code : -
+package Recursion;
+import java.util.*;
+public class lec17palindromicpartition {
+
+	public static void main(String[] args) {
+		String s = "aab";
+		List<List<String>> ans=partition(s);
+		for(List<String>x:ans)
+			System.out.println(x);
+
+	}
+public static List<List<String>> partition(String s) {
+	List<List<String>> res=new ArrayList<>();
+	List<String> cur=new ArrayList<>();
+	findPartition(0,cur,res,s);
+        return res;
+    }
+private static void findPartition(int ind, List<String> cur, List<List<String>> res, String s) {
+	if(ind==s.length()) {
+		res.add(new ArrayList<>(cur));
+		return;
+	}
+	for(int i=ind;i<s.length();i++) {
+		if(isPalindrome(ind,i,s)) {
+			cur.add(s.substring(ind,i+1));
+			findPartition(i+1,cur,res,s);
+			//backtrack
+			cur.remove(cur.size()-1);
+		}
+	}
+	
+}
+private static boolean isPalindrome(int l, int r, String s) {
+	while(l<=r) {
+		if(s.charAt(l++)!=s.charAt(r--))
+			return false;
+	}
+	return true;
+}
+
+}
