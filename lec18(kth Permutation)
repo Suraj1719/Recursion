@@ -1,0 +1,80 @@
+leetcode 60 (hard)
+
+//approach - 1 (find all permutation and store all to a list and sort the list . After that return (k-1) th element.)
+
+time complexity : O(n!)*O(n)(for copy to a list)*(n!logn!)(for sorting)
+space complexity : O(n!)
+package Recursion;
+import java.util.*;
+public class lec18kthpermutation {
+
+	public static void main(String[] args) {
+		int n = 4, k = 9;
+		System.out.println(getPermutation(n,k));
+
+	}
+	public static String getPermutation(int n, int k) {
+		List<String> res=new ArrayList<>();
+		
+		String s="";
+		for(int i=1;i<=n;i++)
+			s=s+i;
+		findAllPerm(0,res,s);
+		Collections.sort(res);
+		return res.get(k-1);
+		}
+	private static void findAllPerm(int ind, List<String> res, String s) {
+		
+	        if (ind == s.length())
+	            res.add(new String(s));
+	        else {
+	            for (int i = ind; i < s.length(); i++) {
+	                s = swap(s, ind, i);
+	                findAllPerm(ind+1,res,s);
+	                s = swap(s, ind, i);
+	            }
+	        }
+		
+	}
+  
+	public static String swap(String a, int i, int j)
+    {
+        char temp;
+        char[] charArray = a.toCharArray();
+        temp = charArray[i];
+        charArray[i] = charArray[j];
+        charArray[j] = temp;
+        return String.valueOf(charArray);
+    }
+}
+
+
+
+//optimised approach
+  
+  class Solution {
+    public String getPermutation(int n, int k) {
+        int fact=1;
+        //time complexity : O(n^2)
+        //space complexity :O(n)
+        List<Integer> num=new ArrayList<>();
+        for(int i=1;i<n;i++){
+            fact=fact*i;
+            num.add(i);
+
+        }
+        num.add(n);
+        k=k-1;
+        String ans="";
+        while(true){
+            ans=ans+num.get(k/fact);
+            num.remove(k/fact);
+            if(num.size()==0){
+            break;
+        }
+        k=k%fact;
+        fact=fact/num.size();
+        }
+        return ans;
+    }
+}
